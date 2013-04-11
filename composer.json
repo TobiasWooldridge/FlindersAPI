@@ -30,15 +30,10 @@
         "doctrine/data-fixtures": "1.0.*@dev",
 
         "mopa/bootstrap-bundle": "2.1.*@dev",
-        "mopa/composer-bridge": "*@dev"
+        "mopa/composer-bridge": "*@dev",
+        "fabpot/goutte": "dev-master"
     },
     "require-dev": {
-        "behat/behat": "2.4.*",
-        "behat/symfony2-extension": "*",
-        "behat/mink-extension": "*",
-        "behat/mink-browserkit-driver": "*",
-        "phpspec/phpspec2": "dev-develop",
-        "phpspec/php-diff": "*@dev"
     },
     "config": {
         "bin-dir": "bin"
