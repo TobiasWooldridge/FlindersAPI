@@ -46,6 +46,21 @@ class RoomBooking
       */
     private $description;
 
+    /**
+      * @var boolean
+      *
+      * @ORM\Column(name="cancelled", type="boolean")
+      */
+    private $cancelled;
+
+    /**
+      * @var Room
+      *
+      * @ORM\ManyToOne(targetEntity="Room")
+      * @ORM\JoinColumn(name="room_id", referencedColumnName="id")
+      */
+    private $room;
+
 
     /**
      * Get id
@@ -124,5 +139,51 @@ class RoomBooking
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Set room
+     *
+     * @param \App\Entity\Room $room
+     * @return RoomBooking
+     */
+    public function setRoom(\App\Entity\Room $room = null)
+    {
+        $this->room = $room;
+    
+        return $this;
+    }
+
+    /**
+     * Get room
+     *
+     * @return \App\Entity\Room 
+     */
+    public function getRoom()
+    {
+        return $this->room;
+    }
+
+    /**
+     * Set cancelled
+     *
+     * @param boolean $cancelled
+     * @return RoomBooking
+     */
+    public function setCancelled($cancelled)
+    {
+        $this->cancelled = $cancelled;
+    
+        return $this;
+    }
+
+    /**
+     * Get cancelled
+     *
+     * @return boolean 
+     */
+    public function getCancelled()
+    {
+        return $this->cancelled;
     }
 }

@@ -42,14 +42,19 @@ class PullRoomBookingsCommand extends ContainerAwareCommand
     {
         $em = $this->getContainer()->get('doctrine')->getEntityManager();
 
+
         $buildingId = 'IST';
+        $scrapeDate = new \DateTime(date('c'), new \DateTimeZone('Australia/Adelaide'));
+        $scrapeDateEnd = clone $scrapeDate;
+        $scrapeDateEnd->modify('+24 hours');
+
 
         $base_url = 'http://stusyswww.flinders.edu.au/roombook.taf';
 
         $parameters = array(
             '_function' => 'all',
             'bldg' => $buildingId,
-            'weekday' => strtoupper(date('d-M-Y'))
+            'weekday' => strtoupper($scrapeDate->format('d-M-Y'))
         );
 
         $request_url = $base_url . '?' . http_build_query($parameters);
@@ -112,39 +117,57 @@ class PullRoomBookingsCommand extends ContainerAwareCommand
 
             $em->persist($room);
 
-            continue;
+            $deleteQuery = $em->createQuery('DELETE App\Entity\RoomBooking b WHERE b.room = :room AND b.start BETWEEN :day_start and :day_end');
+            $deleteQuery->setParameters(array(
+                'room' => $room,
+                'day_start' => $scrapeDate,
+                'day_end' => $scrapeDateEnd
+            ));
+            $deleteQuery->execute();
 
-            foreach ($columns as $i => $column) {
-                // Skip the first three columns
-                if ($i < 3) {
+            foreach ($columns as $j => $booking) {
+                // First three columns are the metadata for the rooms
+                if ($j < 3) {
                     continue;
                 }
 
-                $pattern = '$<a href="/?(?P<type>roombook|topic)\.taf\?(?P<htmlQuery>.*?)">(<i>)?(?P<id>[\/A-z0-9]+)(</i>)?</a> (?P<name>[A-z0-9 \(\)]+)<br/>$';
+                $pattern = '$<a href="/?(?P<type>roombook|topic)\.taf\?(?P<htmlQuery>.*?)">(<i>)?(?P<id>[\/A-z0-9]+)(</i>)?</a> (?P<name>[A-z0-9 \(\)]+)(?P<cancelled>[\* ]*)<br/>$';
 
-                $bookingHtml = get_inner_html($column);
+                $bookingHtml = $this->getInnerHtml($booking);
                 if (preg_match_all($pattern, $bookingHtml, $matches, PREG_SET_ORDER) == 0) {
                     continue;
                 }
-
-                $bookingsData = array();
-                foreach ($matches as $match) {
-                    $bookingData = array();
-
-                    $bookingData['time'] = $times[$i - 3];
-
-                    $bookingData['id'] = $match['id'];
-                    $bookingData['name'] = $match['name'];
-                    $htmlQuery = htmlspecialchars_decode($match['htmlQuery']);
-                    parse_str($htmlQuery, $bookingData['queryString']);
-
-                    $bookingData['type'] = $match['type'];
-
-                    $bookingsData[] = $bookingData;
-
+                
+                if ($times[$j - 3] == '12 noon') {
+                    $times[$j - 3] = '12 pm';
                 }
 
-                $room->bookings[$i - 3] = $bookingData;
+                $bookingStart = new \DateTime(date('c', strtotime($scrapeDate->format('Y-m-d') . ' ' . $times[$j - 3])), new \DateTimeZone('Australia/Adelaide'));
+
+                $bookingEnd = clone $bookingStart;
+                $bookingEnd->modify('+1 hour');
+
+                foreach ($matches as $match) {
+                    $booking = new RoomBooking();
+                    $booking->setRoom($room);
+                    $booking->setStart($bookingStart);
+                    $booking->setEnd($bookingEnd);
+                    $booking->setDescription($match['id'] . ' ' . $match['name'] . ' (' . $match['type'] . ')');
+                    $booking->setCancelled($match['cancelled'] != '*');
+
+
+                    // $bookingData['id'] = $match['id'];
+                    // $bookingData['name'] = $match['name'];
+                    // $htmlQuery = htmlspecialchars_decode($match['htmlQuery']);
+                    // parse_str($htmlQuery, $bookingData['queryString']);
+
+                    // $bookingData['type'] = $match['type'];
+
+                    // var_dump($bookingData);
+
+                    $em->persist($booking);
+                }
+
             }
         }
 
