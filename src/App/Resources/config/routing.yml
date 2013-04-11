@@ -4,6 +4,6 @@ homepage:
     pattern: /
     defaults: { _controller: App:Default:homepage }
 
-App:Buildings: ~
-    # pattern: /buildings
-    # defaults: { _controller: App:Building:all }
+app_buildings_index:
+    pattern: /buildings
+    defaults: { _controller: App:Buildings:index }
