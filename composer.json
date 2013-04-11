@@ -1,13 +1,14 @@
 {
-    "name": "knplabs/rad-edition",
-    "description": "The \"KnpLabs Symfony2 Rad Edition\"",
-    "keywords": ["Symfony2", "Symfony2 Rad Edition", "Symfony2 Distribution"],
-    "license":     "MIT",
-    "homepage": "http://rad.knplabs.com",
+    "name": "tobias/flinders-api",
+    "description": "API to access publicly available Flinders University data",
+    "keywords": [],
+    "license": "Copyright 2013 Tobias Wooldridge",
+    "homepage": "http://tobias.wooldridge.id.au/",
     "authors": [
         {
-            "name":     "Knplabs",
-            "homepage": "http://knplabs.com"
+            "name":     "Tobias Wooldridge",
+            "homepage": "http://tobias.wooldridge.id.au",
+            "email":    "tobias@wooldridge.id.au"
         }
     ],
     "require": {
