@@ -8,12 +8,12 @@ use JMS\DiExtraBundle\Annotation as DI;
 
 
 /**
- * Buildings controller.
+ * Rooms controller.
  */
-class BuildingsController
+class RoomsController
 {
     /**
-     * @DI\Inject("app.entity.building_repository")
+     * @DI\Inject("app.entity.room_repository")
      */
     protected $repository;
 
@@ -24,9 +24,9 @@ class BuildingsController
 
     public function indexAction($_format)
     {
-        $buildings = $this->repository->findAll();
+        $rooms = $this->repository->findAll();
 
-        $serialized = $this->serializer->serialize($buildings, $_format);
+        $serialized = $this->serializer->serialize($rooms, $_format);
 
         $response = new Response($serialized);
 
@@ -35,11 +35,11 @@ class BuildingsController
 
     public function showAction($id, $_format)
     {
-        $building = $this->repository->findOneById($id);
+        $room = $this->repository->findOneById($id);
 
-        if (!$building) throw new NotFoundHttpException("The resource was not found");
+        if (!$room) throw new NotFoundHttpException("The resource was not found");
 
-        $serialized = $this->serializer->serialize($building, $_format);
+        $serialized = $this->serializer->serialize($room, $_format);
 
         $response = new Response($serialized);
 

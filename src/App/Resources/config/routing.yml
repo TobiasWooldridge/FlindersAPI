@@ -3,7 +3,25 @@
 homepage:
     pattern: /
     defaults: { _controller: App:Default:homepage }
+    requirements: { _method: 'GET' }
 
 app_buildings_index:
-    pattern: /buildings
+    pattern: /buildings.{_format}
     defaults: { _controller: App:Buildings:index }
+    requirements: { _method: 'GET', _format: '(json|xml)' }
+
+app_buildings_show:
+    pattern: /buildings/{id}.{_format}
+    defaults: { _controller: App:Buildings:show }
+    requirements: { _method: 'GET', _format: '(json|xml)' }
+
+
+app_rooms_index:
+    pattern: /rooms.{_format}
+    defaults: { _controller: App:Rooms:index }
+    requirements: { _method: 'GET', _format: '(json|xml)' }
+
+app_rooms_show:
+    pattern: /rooms/{id}.{_format}
+    defaults: { _controller: App:Rooms:show }
+    requirements: { _method: 'GET', _format: '(json|xml)' }
