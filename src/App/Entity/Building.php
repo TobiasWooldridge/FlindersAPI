@@ -11,6 +11,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 *
 * @ORM\Table()
 * @ORM\Entity
+* @ORM\Entity(repositoryClass="App\Entity\DefaultRepository")
 */
 class Building
 {
@@ -28,4 +29,50 @@ class Building
       * @ORM\Column(name="name", type="string", length=255)
       */
     private $name = "";
+
+    /**
+     * Set id
+     *
+     * @param string $id
+     * @return Building
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    
+        return $this;
+    }
+
+    /**
+     * Get id
+     *
+     * @return string 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return Building
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
 }

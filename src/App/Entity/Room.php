@@ -11,6 +11,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 *
 * @ORM\Table()
 * @ORM\Entity
+* @ORM\Entity(repositoryClass="App\Entity\DefaultRepository")
 */
 class Room
 {
@@ -53,4 +54,116 @@ class Room
       * @ORM\JoinColumn(name="building_id", referencedColumnName="id")
       */
     private $building;
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Get global code
+     *
+     * @return string 
+     */
+    public function getGlobalCode()
+    {
+        return $this->building->getId() . $this->code;
+    }
+
+    /**
+     * Set code
+     *
+     * @param string $code
+     * @return Room
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
+    
+        return $this;
+    }
+
+    /**
+     * Get code
+     *
+     * @return string 
+     */
+    public function getCode()
+    {
+        return $this->code;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return Room
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set capacity
+     *
+     * @param integer $capacity
+     * @return Room
+     */
+    public function setCapacity($capacity)
+    {
+        $this->capacity = $capacity;
+    
+        return $this;
+    }
+
+    /**
+     * Get capacity
+     *
+     * @return integer 
+     */
+    public function getCapacity()
+    {
+        return $this->capacity;
+    }
+
+    /**
+     * Set building
+     *
+     * @param \App\Entity\Building $building
+     * @return Room
+     */
+    public function setBuilding(\App\Entity\Building $building = null)
+    {
+        $this->building = $building;
+    
+        return $this;
+    }
+
+    /**
+     * Get building
+     *
+     * @return \App\Entity\Building 
+     */
+    public function getBuilding()
+    {
+        return $this->building;
+    }
 }
