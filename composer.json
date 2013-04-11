@@ -31,7 +31,9 @@
 
         "mopa/bootstrap-bundle": "2.1.*@dev",
         "mopa/composer-bridge": "*@dev",
-        "fabpot/goutte": "dev-master"
+        "fabpot/goutte": "dev-master",
+        "jms/serializer-bundle": "dev-master",
+        "jms/di-extra-bundle": "dev-master"
     },
     "require-dev": {
     },
