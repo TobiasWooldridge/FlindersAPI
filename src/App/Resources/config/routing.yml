@@ -25,3 +25,13 @@ app_rooms_show:
     pattern: /rooms/{id}.{_format}
     defaults: { _controller: App:Rooms:show }
     requirements: { _method: 'GET', _format: '(json|xml)' }
+
+app_rooms_index:
+    pattern: /room-bookings.{_format}
+    defaults: { _controller: App:RoomBookings:index }
+    requirements: { _method: 'GET', _format: '(json|xml)' }
+
+app_rooms_show:
+    pattern: /room-bookings/{id}.{_format}
+    defaults: { _controller: App:RoomBookings:show }
+    requirements: { _method: 'GET', _format: '(json|xml)' }
