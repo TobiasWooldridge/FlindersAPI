@@ -5,44 +5,53 @@ namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 use JMS\DiExtraBundle\Annotation as DI;
-
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\View\View;
 
 /**
  * Buildings controller.
  */
-class BuildingsController
+class BuildingsController extends FOSRestController
 {
     /**
      * @DI\Inject("app.entity.building_repository")
      */
-    protected $repository;
+    protected $buildingRepository;
 
-	/**
-     * @DI\Inject("serializer")
-	 */
-    protected $serializer;
+    /**
+     * @DI\Inject("fos_rest.view_handler")
+     */
+    protected $view_handler;
+
 
     public function indexAction($_format)
     {
-        $buildings = $this->repository->findAll();
+        $buildings = $this->buildingRepository->findAll();
 
-        $serialized = $this->serializer->serialize($buildings, $_format);
+        $view = $this->view($buildings, 200);
 
-        $response = new Response($serialized);
-
-        return $response;
+        return $this->handleView($view);
     }
 
-    public function showAction($id, $_format)
+    public function showAction($id)
     {
-        $building = $this->repository->findOneById($id);
+        $building = $this->buildingRepository->findOneById($id);
 
-        if (!$building) throw new NotFoundHttpException("The resource was not found");
+        // if (!$building) throw new NotFoundHttpException("The resource was not found");
 
-        $serialized = $this->serializer->serialize($building, $_format);
+        // $serialized = $this->serializer->serialize($building, $_format);
 
-        $response = new Response($serialized);
+        // $response = new Response($serialized);
 
-        return $response;
+        // return $response;
+
+
+        $view = View::create()
+          ->setStatusCode(200)
+          ->setData($building);
+
+        return $this->get('fos_rest.view_handler')->handle($view);
     }
+
 }

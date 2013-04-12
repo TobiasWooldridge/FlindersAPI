@@ -6,32 +6,31 @@ homepage:
     requirements: { _method: 'GET' }
 
 app_buildings_index:
-    pattern: /buildings.{_format}
+    pattern: /buildings
     defaults: { _controller: App:Buildings:index }
-    requirements: { _method: 'GET', _format: '(json|xml)' }
+    requirements: { _method: 'GET' }
 
 app_buildings_show:
-    pattern: /buildings/{id}.{_format}
+    pattern: /buildings/{id}
     defaults: { _controller: App:Buildings:show }
-    requirements: { _method: 'GET', _format: '(json|xml)' }
-
+    requirements: { _method: 'GET' }
 
 app_rooms_index:
-    pattern: /rooms.{_format}
+    pattern: /rooms
     defaults: { _controller: App:Rooms:index }
-    requirements: { _method: 'GET', _format: '(json|xml)' }
+    requirements: { _method: 'GET' }
 
 app_rooms_show:
-    pattern: /rooms/{id}.{_format}
+    pattern: /rooms/{id}
     defaults: { _controller: App:Rooms:show }
-    requirements: { _method: 'GET', _format: '(json|xml)' }
+    requirements: { _method: 'GET' }
 
-app_rooms_index:
-    pattern: /room-bookings.{_format}
+app_bookings_index:
+    pattern: /bookings
     defaults: { _controller: App:RoomBookings:index }
-    requirements: { _method: 'GET', _format: '(json|xml)' }
+    requirements: { _method: 'GET' }
 
-app_rooms_show:
-    pattern: /room-bookings/{id}.{_format}
+app_bookings_show:
+    pattern: /bookings/{id}
     defaults: { _controller: App:RoomBookings:show }
-    requirements: { _method: 'GET', _format: '(json|xml)' }
+    requirements: { _method: 'GET' }

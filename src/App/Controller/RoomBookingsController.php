@@ -5,13 +5,20 @@ namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 use JMS\DiExtraBundle\Annotation as DI;
-
+use Doctrine\ORM\NoResultException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * RoomBookings controller.
  */
 class RoomBookingsController
 {
+    /**
+     * @DI\Inject("doctrine.orm.entity_manager")
+     * @var \Doctrine\ORM\EntityManager
+     */
+    protected $em;
+
     /**
      * @DI\Inject("app.entity.roomBooking_repository")
      */
@@ -24,9 +31,14 @@ class RoomBookingsController
 
     public function indexAction($_format)
     {
-        $roomBooking = $this->repository->findAll();
+        $roomBookings = $this->em
+        ->createQuery(
+            'SELECT b.id, b.start, b.end, b.description, IDENTITY(b.room) room, b.cancelled
+            FROM App\Entity\RoomBooking b'
+            )
+        ->execute();
 
-        $serialized = $this->serializer->serialize($roomBooking, $_format);
+        $serialized = $this->serializer->serialize($roomBookings, $_format);
 
         $response = new Response($serialized);
 
@@ -37,7 +49,14 @@ class RoomBookingsController
     {
         $roomBooking = $this->repository->findOneById($id);
 
-        if (!$roomBooking) throw new NotFoundHttpException("The resource was not found");
+        $roomBookings = $this->em
+        ->createQuery(
+            'SELECT b.id, b.start, b.end, b.description, IDENTITY(b.room) room, b.cancelled
+            FROM App\Entity\RoomBooking b
+            WHERE b.id = :id'
+            )
+        ->setParameter('id', $id)
+        ->getResult();
 
         $serialized = $this->serializer->serialize($roomBooking, $_format);
 

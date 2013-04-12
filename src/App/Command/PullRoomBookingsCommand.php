@@ -155,16 +155,6 @@ class PullRoomBookingsCommand extends ContainerAwareCommand
                     $booking->setDescription($match['id'] . ' ' . $match['name'] . ' (' . $match['type'] . ')');
                     $booking->setCancelled($match['cancelled'] == '*');
 
-
-                    // $bookingData['id'] = $match['id'];
-                    // $bookingData['name'] = $match['name'];
-                    // $htmlQuery = htmlspecialchars_decode($match['htmlQuery']);
-                    // parse_str($htmlQuery, $bookingData['queryString']);
-
-                    // $bookingData['type'] = $match['type'];
-
-                    // var_dump($bookingData);
-
                     $em->persist($booking);
                 }
 
