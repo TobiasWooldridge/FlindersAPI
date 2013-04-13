@@ -1,0 +1,11 @@
+<table>
+	<tr>
+		<th>ID</th>
+		<th>Name</th>
+{% for building in buildings %}
+	<tr>
+		<td>{{ building.id }}</td>
+		<td>{{ building.name }}</td>
+	</tr>
+{% endfor %}
+</table>

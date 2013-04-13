@@ -9,14 +9,16 @@ framework:
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
         strict_requirements: %kernel.debug%
-    form:            true
-    csrf_protection: true
+    form:            ~
+    csrf_protection: ~
     validation:      { enable_annotations: true }
-    templating:      { engines: ['twig'] } #assets_version: SomeVersionScheme
-    default_locale:  %locale%
-    trust_proxy_headers: false # Deprecated in 2.0; will be removed in 2.3 (used trusted_proxies instead)
+    templating:
+        engines: ['twig']
+        #assets_version: SomeVersionScheme
+    default_locale:  "%locale%"
     trusted_proxies: ~
     session:         ~
+    fragments:       ~
 
 # Twig Configuration
 twig:
@@ -53,8 +55,6 @@ doctrine:
     orm:
         auto_generate_proxy_classes: %kernel.debug%
         auto_mapping: true
-        naming_strategy: doctrine.orm.naming_strategy.underscore
-        default_repository_class: Knp\RadBundle\Doctrine\EntityRepository
 
 # Swiftmailer Configuration
 swiftmailer:
@@ -64,20 +64,10 @@ swiftmailer:
     password:  %mailer_password%
     spool:     { type: memory }
 
-jms_di_extra:
-    locations:
-        all_bundles: true
-        directories: ["%kernel.root_dir%/../src"]
-
-fos_rest:
-    view:
-        view_response_listener: false
-        failed_validation: HTTP_BAD_REQUEST
-        default_engine: php
-        formats:
-            json: true
-    format_listener:
-        prefer_extension: true
-    body_listener:
-        decoders:
-            json: fos_rest.decoder.json
+jms_serializer:
+    metadata:
+        auto_detection: true
+        directories:
+            FOSUserBundle:
+                namespace_prefix: FOS\UserBundle
+                path: "@TobiasFlindersBundle/Resources/config/serializer/tobias"

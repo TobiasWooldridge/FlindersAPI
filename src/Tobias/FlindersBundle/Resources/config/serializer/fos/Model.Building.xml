@@ -1,0 +1,4 @@
+<serializer>  
+    <class name="Tobias\FlindersBundle\Model\Building" exclusion-policy="all">  
+    </class>  
+</serializer>  

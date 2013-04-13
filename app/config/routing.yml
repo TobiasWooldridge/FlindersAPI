@@ -1,3 +1,4 @@
-app:
-    resource: "@App/Resources/config/routing.yml"
-    type:     "rest"
+tobias_flinders:
+    resource: "@TobiasFlindersBundle/Controller/"
+    type:     annotation
+    prefix:   /
